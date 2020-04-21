@@ -18,8 +18,8 @@ module.exports = app => {
         });
     });
 
-    server.listen(APP_PORT, () => {
-        console.log(`Listening on port: ${APP_PORT}`);
+    server.listen(process.env.PORT, () => {
+        console.log(`Listening on port: ${process.env.PORT}`);
     });
 
     // sequelize.sync({ force: true }).then(() => {
