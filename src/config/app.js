@@ -8,24 +8,39 @@ module.exports = app => {
     const { sequelize } = app.config.db;
     const { APP_PORT } = process.env;
 
-    sequelize.sync({ force: false }).then(() => {
-        io.on('connection', function (socket) {
-            console.log(`a user connected: ${socket.id}`);
-            socket.on('disconnect', () => {
-                console.log(`a user disconnected: ${socket.id}`);
-            });
-
-            socket.on('new-op', function (msg) {
-                socket.broadcast.emit('new-remote-op', msg);
-            });
+    io.on('connection', function (socket) {
+        console.log(`a user connected: ${socket.id}`);
+        socket.on('disconnect', () => {
+            console.log(`a user disconnected: ${socket.id}`);
         });
 
-        server.listen(APP_PORT, () => {
-            console.log(`Listening on port: ${APP_PORT}`);
+        socket.on('new-op', function (msg) {
+            socket.broadcast.emit('new-remote-op', msg);
         });
-    }).catch(error => {
-        console.log(error);
     });
+
+    server.listen(APP_PORT, () => {
+        console.log(`Listening on port: ${APP_PORT}`);
+    });
+
+    // sequelize.sync({ force: true }).then(() => {
+    //     io.on('connection', function (socket) {
+    //         console.log(`a user connected: ${socket.id}`);
+    //         socket.on('disconnect', () => {
+    //             console.log(`a user disconnected: ${socket.id}`);
+    //         });
+
+    //         socket.on('new-op', function (msg) {
+    //             socket.broadcast.emit('new-remote-op', msg);
+    //         });
+    //     });
+
+    //     server.listen(APP_PORT, () => {
+    //         console.log(`Listening on port: ${APP_PORT}`);
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    // });
 
     return { io }
 }
