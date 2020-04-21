@@ -5,9 +5,6 @@ import 'dotenv/config'
 const app = express();
 
 consign({ cwd: __dirname })
-    .include('config/db.js')
-    .then('config/app.js')
-    .then('middlewares')
-    .then('controllers')
+    .include('config/app.js')
     .then('routes')
     .into(app);

@@ -5,7 +5,6 @@ module.exports = app => {
     const server = http.createServer(app);
     const io = SocketIo(server);
 
-    const { sequelize } = app.config.db;
     const { APP_PORT } = process.env;
 
     io.on('connection', function (socket) {
